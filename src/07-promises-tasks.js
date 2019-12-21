@@ -115,7 +115,9 @@ function getFastestPromise(array) {
 function chainPromises(array, action) {
   return new Promise((resolve) => {
     const arrOfRes = [];
-    array.forEach((elem) => { elem.then((res) => arrOfRes.push(res)); });
+    for (let i = 0; i < array.length; i += 1) {
+      array[i].then((res) => arrOfRes.push(res));
+    }
     resolve(arrOfRes);
   }).then((arrOfRes) => arrOfRes.reduce(action));
 

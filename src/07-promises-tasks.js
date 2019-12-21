@@ -58,8 +58,7 @@ function willYouMarryMe(isPositiveAnswer) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  /*
+function processAllPromises(array) {
   return new Promise((resolve) => {
     const arrOfRes = [];
 
@@ -68,8 +67,8 @@ function processAllPromises(/* array */) {
     }
     resolve(arrOfRes);
   });
-  */
-  throw new Error('Not implemented');
+
+  // throw new Error('Not implemented');
 }
 
 /**

@@ -112,33 +112,82 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+
+  element(value) {
+    const obj = Object.create(this);
+    if (obj.elementValue) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else {
+      obj.elementValue = value;
+    }
+    this.check(obj, obj.elementValue);
+    return obj;
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    const obj = Object.create(this);
+    if (obj.idValue) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else {
+      obj.idValue = `#${value}`;
+    }
+    this.check(obj, obj.idValue);
+    return obj;
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    const obj = Object.create(this);
+    obj.classValue = `${obj.classValue || ''}.${value}`;
+    this.check(obj, obj.classValue);
+    return obj;
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    const obj = Object.create(this);
+    obj.attrValue = `${obj.attrValue || ''}[${value}]`;
+    this.check(obj, obj.attrValue);
+    return obj;
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    const obj = Object.create(this);
+    obj.pseudoClassValue = `${obj.pseudoClassValue || ''}:${value}`;
+    this.check(obj, obj.pseudoClassValue);
+    return obj;
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    const obj = Object.create(this);
+    if (obj.pseudoElementValue) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    } else {
+      obj.pseudoElementValue = `::${value}`;
+    }
+    this.check(obj, obj.pseudoElementValue);
+    return obj;
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    const obj = Object.create(this);
+    obj.combineValue = `${obj.combineValue || ''}${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return obj;
   },
+
+  stringify() {
+    return `${this.combineValue || ''}${this.elementValue || ''}${this.idValue || ''}${this.classValue || ''}${this.attrValue || ''}${this.pseudoClassValue || ''}${this.pseudoElementValue || ''}`;
+  },
+
+  check(obj, selector) {
+    const orderArray = [obj.elementValue, obj.idValue, obj.classValue,
+    // eslint-disable-next-line indent
+    obj.attrValue, obj.pseudoClassValue, obj.pseudoElementValue];
+    orderArray.forEach((item, index) => {
+      if (item && index > orderArray.indexOf(selector)) {
+        throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+      }
+    });
+  },
+
 };
 
 module.exports = {

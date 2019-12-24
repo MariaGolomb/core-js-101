@@ -57,11 +57,11 @@ function willYouMarryMe(isPositiveAnswer) {
  *
  */
 function processAllPromises(array) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const arrOfRes = [];
 
     for (let i = 0; i < array.length; i += 1) {
-      array[i].then(res => arrOfRes.push(res));
+      array[i].then((res) => arrOfRes.push(res));
     }
     resolve(arrOfRes);
   });
@@ -135,5 +135,5 @@ module.exports = {
   willYouMarryMe,
   processAllPromises,
   getFastestPromise,
-  chainPromises
+  chainPromises,
 };

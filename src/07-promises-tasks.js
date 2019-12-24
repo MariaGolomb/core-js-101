@@ -5,7 +5,6 @@
  *                                                                                                *
  ************************************************************************************************ */
 
-
 /**
  * Return Promise object that is resolved with string value === 'Hooray!!! She said "Yes"!',
  * if boolean value === true is passed, resolved with string value === 'Oh no, she said "No".',
@@ -42,7 +41,6 @@ function willYouMarryMe(isPositiveAnswer) {
   });
 }
 
-
 /**
  * Return Promise object that should be resolved with array containing plain values.
  * Function receive an array of Promise objects.
@@ -59,11 +57,11 @@ function willYouMarryMe(isPositiveAnswer) {
  *
  */
 function processAllPromises(array) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const arrOfRes = [];
 
     for (let i = 0; i < array.length; i += 1) {
-      array[i].then((res) => arrOfRes.push(res));
+      array[i].then(res => arrOfRes.push(res));
     }
     resolve(arrOfRes);
   });
@@ -112,14 +110,14 @@ function getFastestPromise(array) {
  *    });
  *
  */
-function chainPromises(array, action) {
+function chainPromises(/* array, action */) {
   /*
   return new Promise((resolve) => {
     const arrOfRes = [];
     array.forEach((pr) => pr.then((res) => arrOfRes.push(res)));
     resolve(arrOfRes);
   }).then((arr) => arr.reduce(action));
-  */
+
   const arrOfRes = [];
   async function inner() {
     await array.forEach((pr) => {
@@ -129,11 +127,13 @@ function chainPromises(array, action) {
   }
 
   return inner();
+  */
+  throw new Error('Not implemented');
 }
 
 module.exports = {
   willYouMarryMe,
   processAllPromises,
   getFastestPromise,
-  chainPromises,
+  chainPromises
 };
